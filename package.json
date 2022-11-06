@@ -1,0 +1,28 @@
+{
+  "name": "mini-webpack",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "敲一个建议打包器哈",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duweiii/mini-webpack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duweiii/mini-webpack/issues"
+  },
+  "homepage": "https://github.com/duweiii/mini-webpack#readme",
+  "dependencies": {
+    "@babel/parser": "^7.20.2",
+    "@babel/traverse": "^7.20.1",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "ejs": "^3.1.8"
+  }
+}
