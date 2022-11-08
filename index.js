@@ -4,11 +4,37 @@ import parser from '@babel/parser'
 import traverse from "@babel/traverse";
 import ejs from "ejs"
 import { transformFromAst } from 'babel-core'
+import { jsonLoader } from './jsonLoader.js'
 
 let id = 0;
 
+const webpackConfig = {
+  module: {
+    rules: [
+      {
+        test: /\.json$/,
+        use: [jsonLoader]
+      }
+    ]
+  }
+}
+
 function createAsset(filePath){
-  const content = fs.readFileSync(filePath, 'utf-8');
+  let content = fs.readFileSync(filePath, 'utf-8');
+
+  // Loader
+  webpackConfig.module.rules.forEach( rule => {
+    if(rule.test.test(filePath)){
+      const loaders = rule.use;
+      if( Array.isArray(loaders) ){
+        loaders.reverse().forEach(loader => {
+          content = loader(content);
+        })
+      }else if( typeof loader === 'function'){
+        content = loaders(content);
+      }
+    }
+  })
 
   const ast = parser.parse(content, {
     sourceType: 'module'

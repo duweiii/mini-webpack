@@ -23,13 +23,20 @@
 
 var _foo = require("./foo.js");
 
+var _userInfo = require("./userInfo.json");
+
+var _userInfo2 = _interopRequireDefault(_userInfo);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function main() {
+  console.log(_userInfo2.default);
   (0, _foo.foo)();
   console.log('main');
 }
 
 main();
-    },{"./foo.js":1}],
+    },{"./foo.js":1,"./userInfo.json":2}],
   
     1: [function (require, module, exports){
       "use strict";
@@ -48,9 +55,18 @@ function foo() {
   (0, _barTwo.bar2)();
   console.log('this is foo');
 }
-    },{"./bar.js":2,"./bar-two.js":3}],
+    },{"./bar.js":3,"./bar-two.js":4}],
   
     2: [function (require, module, exports){
+      "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = "{\r\n  \"name\": \"张三\",\r\n  \"age\": 32,\r\n  \"gender\": \"male\",\r\n  \"nickName\": \"法外狂徒\"\r\n}";
+    },{}],
+  
+    3: [function (require, module, exports){
       "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -63,7 +79,7 @@ function bar() {
 }
     },{}],
   
-    3: [function (require, module, exports){
+    4: [function (require, module, exports){
       "use strict";
 
 Object.defineProperty(exports, "__esModule", {

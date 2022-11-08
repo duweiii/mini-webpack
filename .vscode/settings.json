@@ -1,0 +1,19 @@
+{
+  "beautify.language": {
+    "formatOnSave": true,
+    "js": {
+      "type": [
+        "javascript",
+        "json"
+      ],
+      "filename": [
+        ".jshintrc",
+        ".jsbeautify"
+      ]
+    },
+    "html": [
+      "html",
+      "vue" // 这里是针对vue的，其他的是我对应其他文件的配置
+    ]
+  }
+}
