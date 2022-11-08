@@ -21,6 +21,16 @@ const webpackConfig = {
 
 function createAsset(filePath){
   let content = fs.readFileSync(filePath, 'utf-8');
+  const deps = [];
+
+  // loaderContext
+  const loaderContext = {
+    addDeps(value){
+      // 比如可以在这个上下问对象中提供补充依赖的能力。
+      // deps.push(value)
+      // console.log(value, "execute in this function(createAsset), you can do something")
+    }
+  }
 
   // Loader
   webpackConfig.module.rules.forEach( rule => {
@@ -28,10 +38,10 @@ function createAsset(filePath){
       const loaders = rule.use;
       if( Array.isArray(loaders) ){
         loaders.reverse().forEach(loader => {
-          content = loader(content);
+          content = loader.call(loaderContext, content);
         })
       }else if( typeof loader === 'function'){
-        content = loaders(content);
+        content = loaders.call(loaderContext, content);
       }
     }
   })
@@ -40,7 +50,6 @@ function createAsset(filePath){
     sourceType: 'module'
   })
 
-  const deps = [];
   traverse.default(ast, {
     ImportDeclaration(node) {
       deps.push(node.node.source.value);
