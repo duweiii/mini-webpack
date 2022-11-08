@@ -5,10 +5,13 @@ import traverse from "@babel/traverse";
 import ejs from "ejs"
 import { transformFromAst } from 'babel-core'
 import { jsonLoader } from './jsonLoader.js'
+import { SyncHook } from 'tapable';
+import { ChangeOutputPlugin } from './changeOutputPath.js'
 
 let id = 0;
 
 const webpackConfig = {
+  plugins: [ new ChangeOutputPlugin()],
   module: {
     rules: [
       {
@@ -18,6 +21,17 @@ const webpackConfig = {
     ]
   }
 }
+
+const hooks = {
+  changeOutputHooks: new SyncHook(['pluginAPIs']),
+}
+
+function initPlugin(){
+  webpackConfig.plugins.forEach(plugin => {
+    plugin.apply(hooks)
+  })
+}
+initPlugin();
 
 function createAsset(filePath){
   let content = fs.readFileSync(filePath, 'utf-8');
@@ -107,7 +121,16 @@ function build(){
 
   const code = ejs.render(template, { data })
 
-  fs.writeFileSync('./dist/bundle.js', code);
+  let outputPath = './dist/bundle.js';
+  const pluginAPIs = {
+    changeOutputPath(path){
+      outputPath = path;
+    }
+  }
+  
+  hooks.changeOutputHooks.call(pluginAPIs)
+
+  fs.writeFileSync(outputPath, code);
 }
 
 build();
